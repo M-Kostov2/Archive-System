@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable = ['title', 'year', 'type'];
+    protected $fillable = [
+    'title',
+    'year',
+    'type',
+    'file_path',
+    'file_name',
+    'archived',
+];
 
-    public function archives()
-    {
-        return $this->hasMany(ArchiveFile::class);
-    }
+
 }

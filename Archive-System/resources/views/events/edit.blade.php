@@ -3,45 +3,59 @@
         <h2 class="text-xl font-semibold">Edit Event</h2>
     </x-slot>
 
-    <div class="p-6">
-        <form method="POST" action="{{ route('events.update', $event) }}">
-            @csrf
-            @method('PUT')
-
-            <input name="title" value="{{ $event->title }}" class="border p-2 w-full mb-2">
-            <input name="year" value="{{ $event->year }}" class="border p-2 w-full mb-2">
-            <input name="type" value="{{ $event->type }}" class="border p-2 w-full mb-2">
-
-            <button class="bg-blue-500 text-white px-4 py-2">Save</button>
-        </form>
-
-        <hr class="my-6">
-
-        <h3 class="font-semibold mb-2">📎 Archive files</h3>
-
+    <div class="p-6 max-w-lg">
         <form method="POST"
-              action="{{ route('archives.store', $event) }}"
-              enctype="multipart/form-data"
-              class="mb-4">
+              action="{{ route('events.update', $event) }}"
+              enctype="multipart/form-data">
             @csrf
-            <input type="file" name="file" required>
-            <button class="bg-green-500 text-white px-3 py-1">Upload</button>
-        </form>
+            @method('PATCH')
 
-        <ul>
-            @foreach($event->archives as $file)
-                <li class="flex justify-between mb-2">
-                    <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank">
-                        {{ $file->original_name }}
+            <div class="mb-4">
+                <label class="block">Title</label>
+                <input type="text"
+                       name="title"
+                       value="{{ $event->title }}"
+                       class="border p-2 w-full"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block">Year</label>
+                <input type="number"
+                       name="year"
+                       value="{{ $event->year }}"
+                       class="border p-2 w-full"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block">Type</label>
+                <input type="text"
+                       name="type"
+                       value="{{ $event->type }}"
+                       class="border p-2 w-full"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block">Replace file (optional)</label>
+                <input type="file" name="file" class="border p-2 w-full">
+            </div>
+
+            @if ($event->file_path)
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600">Current file:</p>
+                    <a href="{{ asset('storage/' . $event->file_path) }}"
+                       target="_blank"
+                       class="text-blue-600 underline">
+                        {{ $event->original_name }}
                     </a>
+                </div>
+            @endif
 
-                    <form method="POST" action="{{ route('archives.destroy', $file) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button class="text-red-500">Delete</button>
-                    </form>
-                </li>
-            @endforeach
-        </ul>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded">
+                Save Changes
+            </button>
+        </form>
     </div>
 </x-app-layout>

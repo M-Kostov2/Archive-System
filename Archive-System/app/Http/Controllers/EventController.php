@@ -7,17 +7,9 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $events = Event::query()
-            ->when($request->title, fn($q) =>
-                $q->where('title', 'like', '%' . $request->title . '%')
-            )
-            ->when($request->type, fn($q) =>
-                $q->where('type', $request->type)
-            )
-            ->get();
-
+        $events = Event::all();
         return view('events.index', compact('events'));
     }
 
@@ -26,36 +18,55 @@ class EventController extends Controller
         return view('events.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'year'  => 'required|integer',
-            'type'  => 'required|string|max:255',
-        ]);
+ public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'year' => 'required',
+        'type' => 'required',
+        'file' => 'nullable|file|max:10240',
+    ]);
 
-        Event::create($request->all());
+    $data = $request->only('title', 'year', 'type');
 
-        return redirect()->route('events.index');
+    if ($request->hasFile('file')) {
+        $path = $request->file('file')->store('events', 'public');
+        $data['file_path'] = $path;
+        $data['file_name'] = $request->file('file')->getClientOriginalName();
     }
+
+    Event::create($data);
+
+    return redirect()->route('events.index');
+}
 
     public function edit(Event $event)
     {
         return view('events.edit', compact('event'));
     }
 
-    public function update(Request $request, Event $event)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'year'  => 'required|integer',
-            'type'  => 'required|string|max:255',
-        ]);
+   public function update(Request $request, Event $event)
+{
+    $request->validate([
+        'title' => 'required',
+        'year' => 'required',
+        'type' => 'required',
+        'file' => 'nullable|file|max:10240',
+    ]);
 
-        $event->update($request->all());
+    $data = $request->only('title', 'year', 'type');
 
-        return redirect()->route('events.index');
+    if ($request->hasFile('file')) {
+        $path = $request->file('file')->store('events', 'public');
+        $data['file_path'] = $path;
+        $data['file_name'] = $request->file('file')->getClientOriginalName();
     }
+
+    $event->update($data);
+
+    return redirect()->route('events.index');
+}
+
 
     public function destroy(Event $event)
     {
@@ -63,3 +74,4 @@ class EventController extends Controller
         return redirect()->route('events.index');
     }
 }
+

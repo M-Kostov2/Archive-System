@@ -35,10 +35,7 @@ new class extends Component
                     </x-nav-link>
                     <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
                       📅 {{ __('Events') }}
-               </x-nav-link>
-                    <x-nav-link :href="route('archives.index')" :active="request()->routeIs('archives.*')">
-                 📎 {{ __('Archives') }}
-               </x-nav-link>               
+               </x-nav-link>           
  </div>
             </div>
 

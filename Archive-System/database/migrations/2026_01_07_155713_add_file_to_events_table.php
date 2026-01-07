@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('archive_files', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+      
+    Schema::table('events', function (Blueprint $table) {
+        $table->string('file_path')->nullable();
+        $table->string('file_name')->nullable();
+    });
+     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('archive_files');
+        Schema::table('events', function (Blueprint $table) {
+            //
+        });
     }
 };
