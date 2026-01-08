@@ -38,13 +38,13 @@
             </div>
 
             <div class="mb-4">
-                <label class="block">Replace file (optional)</label>
+                <label class="block"></label>
                 <input type="file" name="file" class="border p-2 w-full">
             </div>
 
             @if ($event->file_path)
                 <div class="mb-4">
-                    <p class="text-sm text-gray-600">Current file:</p>
+                    <p class="text-sm text-gray-600 border p-2 w-full">Current file:</p>
                     <a href="{{ asset('storage/' . $event->file_path) }}"
                        target="_blank"
                        class="text-blue-600 underline">
@@ -53,7 +53,7 @@
                 </div>
             @endif
 
-            <button class="bg-blue-500 text-white px-4 py-2 rounded">
+            <button class="bg-blue-500 text-black px-4 py-2 rounded">
                 Save Changes
             </button>
         </form>

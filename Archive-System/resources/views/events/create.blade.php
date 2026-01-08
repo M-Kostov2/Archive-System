@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold">Add Event</h2>
+        <h2 class="text-color-black text-xl font-semibold border p-2 w-full ">Add Event</h2>
     </x-slot>
 
     <div class="p-6 max-w-lg">
